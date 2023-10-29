@@ -1,16 +1,18 @@
 import * as React from "react";
 import Header from "./Header";
 
-const List = (props) => 
-  
-  props.list.map((item) => 
-    
-    <Item key={item.objectID} item={item} />
-  
+function List(props) {
+  return (
+    <ul>
+      {props.list.map(function (item) {
+        return <Item item={item} key={item.objectID} />;
+      })}
+    </ul>
   );
+}
 
-const Item = ({ item }) => 
-  
+const Item = ({ item }) => {
+  return (
     <li key={item.objectID}>
       <span>
         <a href={item.url}>{item.title}</a>
@@ -18,21 +20,27 @@ const Item = ({ item }) =>
       <span>{item.author + " "}</span>
       <span>{item.num_comments + " "}</span>
       <span>{item.points + " "}</span>
-    </li>;
-
+    </li>
+  );
+};
 
 const Search = (props) => {
-  const handleChange = (event) => 
+ 
+
+  const handleChange = (event) => {
     props.onSearch(event);
-    
+  };
+
+  return (
     <div>
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" value={props.search} onChange={handleChange} />
+      <input id="search" type="text" onChange={handleChange} />
+
       <p>
         Search for <strong>{props.searchTerm}</strong>
       </p>
     </div>
-  
+  );
 };
 
 function App() {
@@ -56,17 +64,15 @@ function App() {
   ];
 
   const [searchTerm, setSearchTerm] = React.useState("");
-
+  
   const handleSearch = (event) => {
     console.log(event.target.value);
     setSearchTerm(event.target.value);
-  };
+  }
 
-  
-
-  const searchedStories = stories.filter(function (story) {
-    return story.title.toLowerCase().includes(searchTerm);
-  });
+  const searchedStories = stories.filter((story) => 
+   story.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
