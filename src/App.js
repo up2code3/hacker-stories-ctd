@@ -1,20 +1,16 @@
 import * as React from "react";
 import Header from "./Header";
 
-function List(props) {
-  return (
-    <ul>
-      {props.list.map(function (item) {
-        return <Item item={item} />;
-      })}
-    </ul>
-  );
-}
-
-const Item = ({item}) => {
+const List = (props) => 
   
+  props.list.map((item) => 
+    
+    <Item key={item.objectID} item={item} />
+  
+  );
 
-  return (
+const Item = ({ item }) => 
+  
     <li key={item.objectID}>
       <span>
         <a href={item.url}>{item.title}</a>
@@ -22,30 +18,22 @@ const Item = ({item}) => {
       <span>{item.author + " "}</span>
       <span>{item.num_comments + " "}</span>
       <span>{item.points + " "}</span>
-    </li>
-  );
-};
+    </li>;
+
 
 const Search = (props) => {
-  const [searchTerm, setSearchTerm] = React.useState('');
-  
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value);
+  const handleChange = (event) => 
     props.onSearch(event);
-  };
-
-  return (
+    
     <div>
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleChange} />
-
+      <input id="search" type="text" value={props.search} onChange={handleChange} />
       <p>
-        Search for <strong>{searchTerm}</strong>
+        Search for <strong>{props.searchTerm}</strong>
       </p>
-
     </div>
-  );
-}
+  
+};
 
 function App() {
   const stories = [
@@ -67,20 +55,28 @@ function App() {
     },
   ];
 
+  const [searchTerm, setSearchTerm] = React.useState("");
+
   const handleSearch = (event) => {
-      console.log(event.target.value);
-  }
+    console.log(event.target.value);
+    setSearchTerm(event.target.value);
+  };
+
+  
+
+  const searchedStories = stories.filter(function (story) {
+    return story.title.toLowerCase().includes(searchTerm);
+  });
 
   return (
     <div>
       <Header />
 
-      <Search onSearch={handleSearch} />
-      
+      <Search onSearch={handleSearch} searchTerm={searchTerm} />
+
       <hr />
 
-      <List list={stories} />
-
+      <List list={searchedStories} />
     </div>
   );
 }
