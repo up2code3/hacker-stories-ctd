@@ -1,48 +1,6 @@
 import * as React from "react";
 import Header from "./Header";
 
-function List(props) {
-  return (
-    <ul>
-      {props.list.map(function (item) {
-        return <Item item={item} key={item.objectID} />;
-      })}
-    </ul>
-  );
-}
-
-const Item = ({ item }) => {
-  return (
-    <li key={item.objectID}>
-      <span>
-        <a href={item.url}>{item.title}</a>
-      </span>
-      <span>{item.author + " "}</span>
-      <span>{item.num_comments + " "}</span>
-      <span>{item.points + " "}</span>
-    </li>
-  );
-};
-
-const Search = (props) => {
- 
-
-  const handleChange = (event) => {
-    props.onSearch(event);
-  };
-
-  return (
-    <div>
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleChange} />
-
-      <p>
-        Search for <strong>{props.searchTerm}</strong>
-      </p>
-    </div>
-  );
-};
-
 function App() {
   const stories = [
     {
@@ -87,4 +45,35 @@ function App() {
   );
 }
 
+const Search = (props) => {
+ 
+
+  const handleChange = (event) => {
+    props.onSearch(event);
+  };
+
+  return (
+    <div>
+      <label htmlFor="search">Search: </label>
+      <input id="search" type="text" onChange={handleChange} />
+
+      <p>
+        Search for <strong>{props.searchTerm}</strong>
+      </p>
+    </div>
+  );
+};
+
+const List = (props) => 
+  props.list.map((item) => (
+      <div key={item.objectID}>
+        <span>
+          <a href={item.url}>{item.title}</a>
+        </span>
+        <span>{item.author + " "}</span>
+        <span>{item.num_comments + " "}</span>
+        <span>{item.points + " "}</span>
+      </div>
+      ));
+    
 export default App;
