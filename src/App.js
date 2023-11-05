@@ -21,14 +21,31 @@ function App() {
     },
   ];
 
-  const [searchTerm, setSearchTerm] = React.useState(
-    localStorage.getItem("search") || "React"
-  );
+  
 
-  React.useEffect(() => {
-    localStorage.setItem("search", searchTerm);
-  }, [searchTerm]);
+  //   React.useState(localStorage.getItem("search") || "React"
+  // );
 
+  // React.useEffect(() => {
+  //   localStorage.setItem("search", searchTerm);
+  // }, [searchTerm]);
+
+  const useSemiPersistentState = (key, initialState) => {
+    
+    const [value, setValue] = 
+      React.useState(
+        localStorage.getItem(key) || initialState
+    )
+
+    React.useEffect(() => {
+      localStorage.setItem(key, value);
+    }, [value]);
+
+    return [value, setValue];
+  }; 
+  
+  const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
+  
   const handleSearch = (event) => {
     console.log(event.target.value);
     setSearchTerm(event.target.value);
@@ -65,7 +82,9 @@ const Search = ({ onSearch, search }) => {
 };
 
 const List = ({ list }) =>
-  list.map((item) => <Item key={item.objectID} item={item} />);
+  list.map((item) => 
+  <Item key={item.objectID} item={item} />
+);
 
 const Item = ({ item }) => (
   <li key={item.objectID}>
