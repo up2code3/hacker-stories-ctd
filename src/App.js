@@ -21,31 +21,28 @@ function App() {
     },
   ];
 
-  
-
+  // the old way with 2 hooks
+  // const [searchTerm, setSearchTerm] = 
   //   React.useState(localStorage.getItem("search") || "React"
   // );
-
   // React.useEffect(() => {
   //   localStorage.setItem("search", searchTerm);
   // }, [searchTerm]);
 
+  // the new way with 1 custom hook
   const useSemiPersistentState = (key, initialState) => {
-    
     const [value, setValue] = 
       React.useState(
         localStorage.getItem(key) || initialState
     )
-
     React.useEffect(() => {
       localStorage.setItem(key, value);
     }, [value]);
-
     return [value, setValue];
   }; 
-  
   const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
   
+
   const handleSearch = (event) => {
     console.log(event.target.value);
     setSearchTerm(event.target.value);
@@ -69,15 +66,16 @@ function App() {
 }
 
 const Search = ({ onSearch, search }) => {
+ 
   const handleChange = (event) => {
     onSearch(event);
   };
 
   return (
-    <div>
+    <>
       <label htmlFor="search">Search: </label>
       <input id="search" type="text" value={search} onChange={handleChange} />
-    </div>
+    </>
   );
 };
 
