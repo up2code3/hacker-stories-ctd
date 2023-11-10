@@ -31,15 +31,18 @@ function App() {
 
   // the new way with 1 custom hook
   const useSemiPersistentState = (key, initialState) => {
+    
     const [value, setValue] = 
       React.useState(
         localStorage.getItem(key) || initialState
     )
+    
     React.useEffect(() => {
       localStorage.setItem(key, value);
     }, [value]);
     return [value, setValue];
   }; 
+  
   const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
   
 
