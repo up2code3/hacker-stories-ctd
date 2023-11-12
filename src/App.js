@@ -21,23 +21,19 @@ const initialStories = [
 ];
 
 function App() {
-
-
   const useSemiPersistentState = (key, initialState) => {
-    
-    const [value, setValue] = 
-      React.useState(
-        localStorage.getItem(key) || initialState
-    )
-    
+    const [value, setValue] = React.useState(
+      localStorage.getItem(key) || initialState
+    );
+
     React.useEffect(() => {
       localStorage.setItem(key, value);
     }, [value]);
     return [value, setValue];
-  }; 
-  
-  const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
-  
+  };
+
+  const [searchTerm, setSearchTerm] = useSemiPersistentState("search", "React");
+
   const [stories, setStories] = React.useState(initialStories);
 
   const handleRemoveStory = (item) => {
@@ -61,17 +57,16 @@ function App() {
     <div>
       <Header />
 
-      <InputWithLabel 
-        id='Search' 
-        // label='Search' 
-        value={searchTerm} 
-        isFocused 
-        onInputChange={handleSearch}  
+      <InputWithLabel
+        id="Search"
+        // label='Search'
+        value={searchTerm}
+        isFocused
+        onInputChange={handleSearch}
       >
-        <strong>Search:</strong>  
-        
+        <strong>Search:</strong>
       </InputWithLabel>
-      
+
       <hr />
 
       <List list={searchedStories} onRemoveItem={handleRemoveStory} />
@@ -80,15 +75,15 @@ function App() {
 }
 
 // vvv Formally search comp
-const  InputWithLabel = ({ 
-  id, 
-  // label, 
-  value, 
-  type='text', 
+const InputWithLabel = ({
+  id,
+  // label,
+  value,
+  type = "text",
   onInputChange,
   isFocused,
   children,
-}) => { 
+}) => {
   const inputRef = React.useRef();
 
   React.useEffect(() => {
@@ -96,51 +91,47 @@ const  InputWithLabel = ({
       inputRef.current.focus();
     }
   }, [isFocused]);
-  
-  return(
-  <> 
-   <label htmlFor={id}> {children} </label>
-   &nbsp;
-   <input 
-    ref={inputRef}
-    id={id} 
-    type={type} 
-    value={value}  
-    onChange={onInputChange} 
-    />
-  </>
-);
+
+  return (
+    <>
+      <label htmlFor={id}> {children} </label>
+      &nbsp;
+      <input
+        ref={inputRef}
+        id={id}
+        type={type}
+        value={value}
+        onChange={onInputChange}
+      />
+    </>
+  );
 };
 
 const List = ({ list, onRemoveItem }) =>
-  list.map((item) => 
-  <Item 
-  key={item.objectID} 
-  item={item}
-  onRemoveItem={onRemoveItem} />
-);
+  list.map((item) => (
+    <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />
+  ));
 
-const Item = ({ item, onRemoveItem} ) => {
+const Item = ({ item, onRemoveItem }) => {
   const handleRemoveItem = () => {
     onRemoveItem(item);
-  }
-return (
-  <li>
-    <span>
-      <a href={item.url}>{item.title}</a>
-    </span>
-    <span>{item.author + " "}</span>
-    <span>{item.num_comments + " "}</span>
-    <span>{item.points + " "}</span>
-    
-    <span>
-      <button type="button" onClick={() => onRemoveItem(item)}>
-        Remove
-      </button>
-    </span>
+  };
+  return (
+    <li>
+      <span>
+        <a href={item.url}>{item.title}</a>
+      </span>
+      <span>{item.author + " "}</span>
+      <span>{item.num_comments + " "}</span>
+      <span>{item.points + " "}</span>
 
-  </li>
-);
+      <span>
+        <button type="button" onClick={() => onRemoveItem(item)}>
+          Remove
+        </button>
+      </span>
+    </li>
+  );
 };
 
 export default App;
